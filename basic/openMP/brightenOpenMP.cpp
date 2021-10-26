@@ -18,14 +18,15 @@ int main(int argc, char *argv[]) {
 
 
   t1 = omp_get_wtime();
+  #pragma omp parallel for num_threads(4)
   for(int k=0; k<1000; k++){
-    for(int i=0; i< (int) in_image.size(); i++) {
-      output_image[i] = min(1.5*in_image[i], 255.0);
-    }
+      for(int i=0; i< (int) in_image.size(); i++) {
+        output_image[i] = min(1.5*in_image[i], 255.0);
+      }
   }
   t2 = omp_get_wtime();
   cout<<t2-t1<<endl;
-
+  
 
   error = lodepng_encode32_file("../../output.png", output_image, width, height);
   if(error) printf("error %u: %s\n", error, lodepng_error_text(error));
