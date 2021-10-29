@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
   // applying kernel i.e., avg of surrounding pixels
   t1 = omp_get_wtime();
   #pragma omp parallel for collapse(2)
-  for(int k=0; k<1000; k++){
+  for(int k=0; k<1; k++){
     for(int i=3; i<=(int)height+2; i++){
       for(int j=3; j<=(int)width+2; j++) {
           output_image[(i-3)*width*4 + (j-3)*4 + 0] = find_avg(i,j,0,rgb_image,kernel);

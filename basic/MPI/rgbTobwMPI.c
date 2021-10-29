@@ -36,7 +36,7 @@ int main(int argc,char *argv[ ])
     MPI_Bcast(temp, len, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
     MPI_Scatter(in_image, len, MPI_UNSIGNED_CHAR, cal, len, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
 
-    for(int k=0; k<1000; k++){
+    for(int k=0; k<1; k++){
         for(i=0; i<len; i=i+4){
             temp[i+0] = cal[i]*0.299 + cal[i+1]*0.587 + cal[i+2]*0.114; 
             temp[i+1] = cal[i]*0.299 + cal[i+1]*0.587 + cal[i+2]*0.114; 

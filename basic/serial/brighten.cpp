@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 
 
   t1 = omp_get_wtime();
-  for(int k=0; k<1000; k++){
+  for(int k=0; k<10000; k++){
     for(int i=0; i< (int) in_image.size(); i++) {
       output_image[i] = min(1.5*in_image[i], 255.0);
     }
