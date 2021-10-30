@@ -4,7 +4,7 @@
 
 using namespace std;
 
-unsigned char conv(int y, int x, int color, unsigned char rgb_image[821][1026][3], double kernel[3][3]) {
+unsigned char conv(int y, int x, int color, unsigned char padded_image[821][1026][3], double kernel[3][3]) {
 
     double ans=0;
 
@@ -15,7 +15,7 @@ unsigned char conv(int y, int x, int color, unsigned char rgb_image[821][1026][3
 
     for(int i=YlowerLimit; i<=YupperLimit; i++){
         for(int j=XlowerLimit; j<=XupperLimit; j++){
-            ans = ans + ((int)rgb_image[i][j][color])*kernel[i-YlowerLimit][j-XlowerLimit];
+            ans = ans + ((int)padded_image[i][j][color])*kernel[i-YlowerLimit][j-XlowerLimit];
         }
     }
 
