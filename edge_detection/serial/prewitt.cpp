@@ -35,9 +35,21 @@ int main(int argc, char *argv[]) {
   if(error) std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
 
   unsigned char* input_image = (unsigned char*) malloc((int)in_image.size());
+  unsigned char* bw_image = (unsigned char*) malloc((int)in_image.size());
   unsigned char* output_image = (unsigned char*) malloc((int)in_image.size());
 
   unsigned char padded_image[821][1026][3];
+
+  // rgb-bw image
+  t1 = omp_get_wtime();
+  for(int k=0; k<10000; k++){
+    for(int i=0; i< (int) in_image.size(); i=i+4){
+      bw_image[i] = in_image[i]*0.299 + in_image[i+1]*0.587 + in_image[i+2]*0.114; 
+      bw_image[i+1] = in_image[i]*0.299 + in_image[i+1]*0.587 + in_image[i+2]*0.114;
+      bw_image[i+2] = in_image[i]*0.299 + in_image[i+1]*0.587 + in_image[i+2]*0.114;
+      bw_image[i+3] = in_image[i]; 
+    }
+  }
 
   // forming the padded image
   for(int i=0; i< (int) height; i++) {
@@ -48,9 +60,9 @@ int main(int argc, char *argv[]) {
             padded_image[i][j][2] = 0;
           }
           else {
-            padded_image[i][j][0] = in_image[i*width*4 + j*4 + 0];
-            padded_image[i][j][1] = in_image[i*width*4 + j*4 + 1];
-            padded_image[i][j][2] = in_image[i*width*4 + j*4 + 2];
+            padded_image[i][j][0] = bw_image[i*width*4 + j*4 + 0];
+            padded_image[i][j][1] = bw_image[i*width*4 + j*4 + 1];
+            padded_image[i][j][2] = bw_image[i*width*4 + j*4 + 2];
           }
           
       }
@@ -63,8 +75,7 @@ int main(int argc, char *argv[]) {
   double kernel2[3][3] = {{-1,-1,-1},{0,0,0},{1,1,1}};
 
   // applying kernels
-  t1 = omp_get_wtime();
-  for(int k=0; k<1000; k++){
+  for(int k=0; k<10000; k++){
       for(int i=1; i<=(int)height; i++){
         for(int j=1; j<=(int)width; j++) {
           temp = sqrt( pow(conv(i,j,0,padded_image,kernel1),2) + pow(conv(i,j,0,padded_image,kernel2),2) );
@@ -75,9 +86,9 @@ int main(int argc, char *argv[]) {
             output_image[(i-1)*width*4 + (j-1)*4 + 3] = 255;
           }
           else {
-            output_image[(i-1)*width*4 + (j-1)*4 + 0] = temp;
-            output_image[(i-1)*width*4 + (j-1)*4 + 1] = temp;
-            output_image[(i-1)*width*4 + (j-1)*4 + 2] = temp;
+            output_image[(i-1)*width*4 + (j-1)*4 + 0] = min(2.0*temp, 255.0);
+            output_image[(i-1)*width*4 + (j-1)*4 + 1] = min(2.0*temp, 255.0);
+            output_image[(i-1)*width*4 + (j-1)*4 + 2] = min(2.0*temp, 255.0);
             output_image[(i-1)*width*4 + (j-1)*4 + 3] = 255;
           }
       }

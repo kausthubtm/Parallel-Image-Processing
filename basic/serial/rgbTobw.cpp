@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
       output_image[i+1] = in_image[i]*0.299 + in_image[i+1]*0.587 + in_image[i+2]*0.114;
       output_image[i+2] = in_image[i]*0.299 + in_image[i+1]*0.587 + in_image[i+2]*0.114;
       output_image[i+3] = in_image[i]; 
+      // cout<<k<<" "<<i<<" "<<omp_get_thread_num()<<endl;
     }
   }
   t2 = omp_get_wtime();
