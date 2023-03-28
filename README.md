@@ -1,5 +1,5 @@
 # Parallel-Image-Processing
-Parallel implementation (OpenMP and MPI) of Basic Image Processing algorithms
+Parallel implementation (OpenMP and MPI) and its serial implementation of Basic Image Processing algorithms. The repo includes implementations of, RGB to BW, Brighten, Prewitt, Box, Median, Gaussian
 
 ## Running a program
 
